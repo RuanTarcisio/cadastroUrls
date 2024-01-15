@@ -38,8 +38,6 @@ public class Cliente implements Serializable {
     private Long id;
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
-    @Column(name = "cpf", nullable = false, unique = true, length = 11)
-    private String cpf;
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
