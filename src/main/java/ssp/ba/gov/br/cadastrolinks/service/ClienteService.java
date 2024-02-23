@@ -1,6 +1,7 @@
 package ssp.ba.gov.br.cadastrolinks.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,21 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+//	public Cliente buscarPorCpf(String cpf) {
+//		Optional<Cliente> obj = clienteRepository.findByCpf(cpf);
+//		return obj.orElse(null);
+//	}
+
+	public Cliente buscarPorEmail(String email) {
+		Optional<Cliente> obj = clienteRepository.findByEmail(email);
+		return obj.orElse(null);
+	}
+
+//	public Cliente buscarPorMatricula(String matricula) {
+//		Optional<Cliente> obj = clienteRepository.findByMatricula(matricula);
+//		return obj.orElse(null);
+//	}
 
 	@Transactional
 	public Cliente cadastrar(Cliente newCliente) {

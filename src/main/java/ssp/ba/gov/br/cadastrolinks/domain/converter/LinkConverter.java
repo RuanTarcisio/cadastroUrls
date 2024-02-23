@@ -1,9 +1,6 @@
 package ssp.ba.gov.br.cadastrolinks.domain.converter;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.jsoup.HttpStatusException;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

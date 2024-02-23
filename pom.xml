@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>CadastroDeLinksSSP</name>
-	<description>API para cadastro de links para a ouvidoria SSP</description>
+	<description>API de cadastro de links para a ouvidoria SSP</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

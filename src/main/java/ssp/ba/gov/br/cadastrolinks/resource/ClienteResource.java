@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -53,6 +54,15 @@ public class ClienteResource {
 		Cliente cliente = service.buscarPorId(id);
 		UsuarioViewDto objDto = ClienteConverter.toDto(cliente);
 		return ResponseEntity.ok().body(objDto);
+	}
+	
+	@Operation(summary = "Busca Usuario por Email")
+	@ApiResponses(value = { @ApiResponse() })
+	@GetMapping(value = "/byemail")
+	public ResponseEntity<Cliente> find(@RequestParam ("email") String email) {
+		Cliente cliente = service.buscarPorEmail(email);
+//		UsuarioViewDto objDto = ClienteConverter.toDto(cliente);
+		return ResponseEntity.ok().body(cliente);
 	}
 
 	@Operation(summary = "Lista todos Usuarios")
