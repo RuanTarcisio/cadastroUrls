@@ -41,6 +41,8 @@ public class Cliente implements Serializable {
     @OneToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
+    @Column(name = "cpf", nullable = false, unique = true, length = 11)
+    private String cpf;
     @Column(unique = true)
 	private String matricula;
     @NotNull

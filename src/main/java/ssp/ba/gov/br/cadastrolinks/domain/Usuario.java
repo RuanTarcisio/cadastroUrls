@@ -35,8 +35,6 @@ public class Usuario implements Serializable {
 	private String email;
 	@Column(name = "password", nullable = false, length = 200)
 	private String password;
-	@Column(name = "cpf", nullable = false, unique = true, length = 11)
-    private String cpf;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false, length = 25)
 	private Role role = Role.ROLE_CLIENTE;

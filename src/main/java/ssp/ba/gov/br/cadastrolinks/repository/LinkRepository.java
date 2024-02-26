@@ -1,4 +1,4 @@
-package ssp.ba.gov.br.cadastrolinks.service;
+package ssp.ba.gov.br.cadastrolinks.repository;
 
 import java.util.Optional;
 

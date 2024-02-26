@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import ssp.ba.gov.br.cadastrolinks.domain.Link;
+import ssp.ba.gov.br.cadastrolinks.repository.LinkRepository;
 import ssp.ba.gov.br.cadastrolinks.service.exception.EntityNotFoundException;
 
 @Service

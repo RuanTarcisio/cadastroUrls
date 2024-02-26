@@ -11,18 +11,18 @@ import ssp.ba.gov.br.cadastrolinks.dto.UsuarioViewDto;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClienteConverter {
 	
-	private final static String senha_inicial = "ALTERAR_SENHA";
+	private final static String senha_inicial = "#ALTERAR_SENHA_INICIAL#";
 
 	public static Cliente toCliente(UsuarioNewDto dto) {
 
 		Usuario user = new Usuario();
 		user.setEmail(dto.getEmail());
 		user.setPassword(senha_inicial);
-		user.setCpf(dto.getCpf());
-		
+				
 		return Cliente.builder()
 				.nome(dto.getNome())
 				.matricula(dto.getMatricula())
+				.cpf(dto.getCpf())
 				.celular(dto.getCelular())
 				.usuario(user)
 				.build();
@@ -33,10 +33,10 @@ public class ClienteConverter {
 
 		Usuario user = new Usuario();
 		user.setEmail(dto.getEmail());
-		user.setCpf(dto.getCpf());
-		
+				
 		return Cliente.builder()
 				.nome(dto.getNome())
+				.cpf(dto.getCpf())
 				.celular(dto.getCelular())
 				.usuario(user)
 				.build();
@@ -47,7 +47,7 @@ public class ClienteConverter {
 
 		return UsuarioViewDto.builder()
 				.email(cliente.getUsuario().getEmail())
-				.cpf(cliente.getUsuario().getCpf())
+				.cpf(cliente.getCpf())
 				.nome(cliente.getNome())
 				.celular(cliente.getCelular())
 				.id(cliente.getId())
