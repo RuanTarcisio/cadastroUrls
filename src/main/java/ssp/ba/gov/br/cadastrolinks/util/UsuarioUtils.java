@@ -9,4 +9,5 @@ public class UsuarioUtils {
     public static Usuario getUsuarioLogado(){
         return  null; //(Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
 }

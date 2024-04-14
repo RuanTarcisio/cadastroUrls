@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ssp.ba.gov.br.cadastrolinks.domain.Cliente;
 import ssp.ba.gov.br.cadastrolinks.domain.Usuario;
+import ssp.ba.gov.br.cadastrolinks.domain.Usuario.StatusUsuarioEnum;
 import ssp.ba.gov.br.cadastrolinks.dto.UsuarioNewDto;
 import ssp.ba.gov.br.cadastrolinks.dto.UsuarioUpdateDto;
 import ssp.ba.gov.br.cadastrolinks.dto.UsuarioViewDto;
@@ -18,6 +19,7 @@ public class ClienteConverter {
 		Usuario user = new Usuario();
 		user.setEmail(dto.getEmail());
 		user.setPassword(senha_inicial);
+		user.setStatusUsuario(StatusUsuarioEnum.BLOQUEADO);
 				
 		return Cliente.builder()
 				.nome(dto.getNome())

@@ -5,16 +5,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import ssp.ba.gov.br.cadastrolinks.domain.Cliente;
 import ssp.ba.gov.br.cadastrolinks.domain.Usuario;
 import ssp.ba.gov.br.cadastrolinks.domain.Usuario.StatusUsuarioEnum;
 import ssp.ba.gov.br.cadastrolinks.repository.ClienteRepository;
-import ssp.ba.gov.br.cadastrolinks.repository.UsuarioRepository;
 import ssp.ba.gov.br.cadastrolinks.service.EnvioEmailService.Mensagem;
-import ssp.ba.gov.br.cadastrolinks.service.exception.EntidadeNaoEncontradaException;
 import ssp.ba.gov.br.cadastrolinks.service.exception.EntityNotFoundException;
 import ssp.ba.gov.br.cadastrolinks.service.exception.UsuarioNaoEncontradoException;
 import ssp.ba.gov.br.cadastrolinks.util.Constantes;
@@ -24,21 +25,21 @@ import ssp.ba.gov.br.cadastrolinks.util.Constantes;
 public class ClienteService {
 
 	@Autowired
-	private UsuarioRepository userRepository;
-	@Autowired
 	private ClienteRepository clienteRepository;
-	
+	@Autowired
+	private PasswordEncoder passEncoder;
 	@Autowired
 	private EnvioEmailService emailService;
-	
-	
+	@Value("${baseUrl}")
+	private String baseUrl;
+
 	public Cliente buscarPorCpf(String cpf) {
 		Optional<Cliente> obj = clienteRepository.findByCpf(cpf);
 		return obj.orElseThrow(() -> new UsuarioNaoEncontradoException(Constantes.USUARIO_NAO_ENCONTRADO));
 	}
 
 	public Cliente buscarPorEmail(String email) {
-		Optional<Cliente> obj = clienteRepository.findByEmail(email);
+		Optional<Cliente> obj = clienteRepository.findByUsuarioEmail(email);
 		return obj.orElseThrow(() -> new UsuarioNaoEncontradoException(Constantes.USUARIO_NAO_ENCONTRADO));
 	}
 
@@ -48,21 +49,19 @@ public class ClienteService {
 	}
 
 	@Transactional
-	public Cliente cadastrar(Cliente newCliente) {
+	public Cliente cadastrar(@Valid Cliente newCliente) {
 		newCliente.getUsuario().setToken(generateToken());
-		Usuario user = userRepository.save(newCliente.getUsuario());
-		newCliente.setUsuario(user);
-		
-		var mensagem = Mensagem.builder()
-				.assunto("testando envio de email")
-				.corpo("ativar-usuario.html")
-				.variavel("cliente", newCliente)
-				.destinatario("ruan.silva@ssp.ba.gov.br")
-				.build();
-		
+//		encodePass(newCliente.getUsuario());
+
+		newCliente = clienteRepository.save(newCliente);
+
+		var mensagem = Mensagem.builder().assunto("testando envio de email").corpo("ativar-usuario.html")
+				.variavel("cliente", newCliente).variavel("url", baseUrl)
+				.destinatario(newCliente.getUsuario().getEmail()).build();
+
 		emailService.enviar(mensagem);
 
-		return clienteRepository.save(newCliente);
+		return newCliente;
 	}
 
 	public List<Cliente> findAll() {
@@ -112,9 +111,16 @@ public class ClienteService {
 		return uuid;
 	}
 
-	private void atualizarUsuario(Cliente cliente) {
-		Usuario user = userRepository.findById(cliente.getId()).get();
-		user = cliente.getUsuario();
+//	private void atualizarUsuario(Cliente cliente) {
+//		Usuario user = userRepository.findById(cliente.getId()).get();
+//		user = cliente.getUsuario();
+//
+//	}
+
+	private void encodePass(Usuario user) {
+		var passNotEncod = user.getPassword();
+		var encodPass = passEncoder.encode(passNotEncod);
+		user.setPassword(encodPass);
 
 	}
 

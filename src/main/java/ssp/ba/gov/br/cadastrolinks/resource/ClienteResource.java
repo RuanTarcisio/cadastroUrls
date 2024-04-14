@@ -29,7 +29,7 @@ import ssp.ba.gov.br.cadastrolinks.dto.UsuarioViewDto;
 import ssp.ba.gov.br.cadastrolinks.service.ClienteService;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/clientes")
 public class ClienteResource {
 
 	@Autowired

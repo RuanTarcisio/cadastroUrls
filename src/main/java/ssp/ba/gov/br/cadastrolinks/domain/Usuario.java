@@ -1,8 +1,12 @@
 package ssp.ba.gov.br.cadastrolinks.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
@@ -14,12 +18,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
+import jakarta.validation.constraints.Email;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "usuarios")
@@ -31,56 +34,43 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	@Column(name = "username", nullable = false, unique = true, length = 100)
+	
+	@Column(name = "email", nullable = false, unique = true, length = 50)
+	@Email
 	private String email;
-	@Column(name = "password", nullable = false, length = 200)
+	
+	@Column(name = "password", nullable = false)
 	private String password;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role", nullable = false, length = 25)
 	private Role role = Role.ROLE_CLIENTE;
+	
 	@Column(name = "status_usuario")
 	@Enumerated(EnumType.STRING)
 	private StatusUsuarioEnum statusUsuario;
-	
-	private String token;
 
-//	@CreatedDate
-//	@Column(name = "data_criacao")
-//	private LocalDateTime dataCriacao;
-//	@LastModifiedDate
-//	@Column(name = "data_modificacao")
-//	private LocalDateTime dataModificacao;
-//	@CreatedBy
-//	@Column(name = "criado_por")
-//	private String criadoPor;
-//	@LastModifiedBy
-//	@Column(name = "modificado_por")
-//	private String modificadoPor;
+	private String token;
+	
+    @CreatedDate
+    @Column(name = "data_criacao")
+    private LocalDateTime dataCriacao;
+    @LastModifiedDate
+    @Column(name = "data_modificacao")
+    private LocalDateTime dataModificacao;
+    @CreatedBy
+    @Column(name = "criado_por")
+    private String criadoPor;
+    @LastModifiedBy
+    @Column(name = "modificado_por")
+    private String modificadoPor;
+
 
 	public enum Role {
 		ROLE_ADMIN, ROLE_CLIENTE
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		Usuario usuario = (Usuario) o;
-		return Objects.equals(id, usuario.id);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public String toString() {
-		return "Usuario{" + "id=" + id + '}';
-	}
-
+	
 	public enum StatusUsuarioEnum {
 
 		ATIVO("ATIVO"), PENDENTE("PENDENTE"), BLOQUEADO("BLOQUEADO"), DESATIVADO("DESATIVADO");

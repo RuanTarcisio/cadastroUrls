@@ -10,7 +10,7 @@ import lombok.Data;
 @Validated
 @Data
 @Component
-@ConfigurationProperties("cadastro-urls.email")
+//@ConfigurationProperties("cadastro-urls.email")
 public class EmailProperties {
 
 	@NotNull

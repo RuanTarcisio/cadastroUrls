@@ -35,26 +35,26 @@ public class Link implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_url")
 	private Long id;
-	@Column(unique = true)
+
 	@NotBlank
 	private String endereco;
 	@NotBlank
 	private String titulo;
-	
+
 	private String favicon;
-	
-	 @CreatedDate
-	    @Column(name = "data_criacao")
-	    private LocalDateTime dataCriacao;
-	    @LastModifiedDate
-	    @Column(name = "data_modificacao")
-	    private LocalDateTime dataModificacao;
-	    @CreatedBy
-	    @Column(name = "criado_por")
-	    private String criadoPor;
-	    @LastModifiedBy
-	    @Column(name = "modificado_por")
-	    private String modificadoPor;
+
+	@CreatedDate
+	@Column(name = "data_criacao")
+	private LocalDateTime dataCriacao;
+	@LastModifiedDate
+	@Column(name = "data_modificacao")
+	private LocalDateTime dataModificacao;
+	@CreatedBy
+	@Column(name = "criado_por")
+	private String criadoPor;
+	@LastModifiedBy
+	@Column(name = "modificado_por")
+	private String modificadoPor;
 
 	public Link(String endereco, String titulo) {
 		this.endereco = endereco;
@@ -67,7 +67,5 @@ public class Link implements Serializable {
 		this.endereco = endereco;
 		this.titulo = titulo;
 	}
-	
-	
 
 }

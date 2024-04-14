@@ -2,6 +2,7 @@ package ssp.ba.gov.br.cadastrolinks.services.validations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import ssp.ba.gov.br.cadastrolinks.domain.Cliente;
 import ssp.ba.gov.br.cadastrolinks.dto.UsuarioNewDto;
+import ssp.ba.gov.br.cadastrolinks.repository.ClienteRepository;
 import ssp.ba.gov.br.cadastrolinks.service.ClienteService;
 import ssp.ba.gov.br.cadastrolinks.service.validation.templ.Problem;
 import ssp.ba.gov.br.cadastrolinks.util.BR;
@@ -18,6 +20,8 @@ public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert
 
 	@Autowired
 	private ClienteService clienteService;
+	@Autowired
+	private ClienteRepository clienteRepository;
 
 	@Override
 	public void initialize(UsuarioInsert ann) {
@@ -31,19 +35,18 @@ public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert
 			list.add(new Problem.Field("cpf", "CPF invalido"));
 		}
 
-		Cliente aux = clienteService.buscarPorEmail(objDto.getEmail());
-		if (aux != null) {
+	
+		if (!clienteRepository.findByUsuarioEmail(objDto.getEmail()).isEmpty()) {
 			list.add(new Problem.Field("email", "E-mail ja cadastrado."));
 		}
 
-//		aux = clienteService.buscarPorCpf(objDto.getCpf());
-//		if (aux != null) {
-//			list.add(new Problem.Field("cpf", "CPF ja cadastrado."));
-//		}
-//		aux = clienteService.buscarPorMatricula(objDto.getMatricula());
-//		if (aux != null) {
-//			list.add(new Problem.Field("matricula", "matricula ja cadastrada."));
-//		}
+		if (!clienteRepository.findByCpf(objDto.getCpf()).isEmpty()) {
+			list.add(new Problem.Field("cpf", "CPF ja cadastrado."));
+		}
+		
+		if (!clienteRepository.findByMatricula(objDto.getMatricula()).isEmpty()) {
+			list.add(new Problem.Field("matricula", "matricula ja cadastrada."));
+		}
 
 		if (objDto.getCelular() != null && !Pattern.compile("^[0-9]{11}$").matcher(objDto.getCelular()).matches()) {
 			list.add(new Problem.Field("celular", "{usuario.padrao-celular.incorreto}"));

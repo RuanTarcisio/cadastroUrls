@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import ssp.ba.gov.br.cadastrolinks.service.exception.PasswordInvalidException;
 import ssp.ba.gov.br.cadastrolinks.service.exception.UsernameUniqueViolationException;
 
 @Slf4j
-//@RestControllerAdvice
+@RestControllerAdvice
 public class ApiExceptionHandler2 {
 
 //    @ExceptionHandler(AccessDeniedException.class)
@@ -27,6 +28,7 @@ public class ApiExceptionHandler2 {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .body(new ErrorMessage(request, HttpStatus.FORBIDDEN, ex.getMessage()));
 //    }
+	
 
     @ExceptionHandler(PasswordInvalidException.class)
     public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException ex, HttpServletRequest request) {
@@ -61,8 +63,7 @@ public class ApiExceptionHandler2 {
                                                                         BindingResult result) {
         log.error("Api Error - ", ex);
         return ResponseEntity
-                .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Campo(s) invalido(s)", result));
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, "Campo(s) invalido(s)", result));
     }
 }
